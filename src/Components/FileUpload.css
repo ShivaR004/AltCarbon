@@ -70,3 +70,78 @@
     font-family: monospace;
     font-size: 14px;
 }
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.preview-table th, .preview-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.preview-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.preview-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.preview-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.success-message {
+    color: #28a745;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.loading-message {
+    color: #007bff;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.reset-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reset-btn:hover {
+    background-color: #5a6268;
+}
+
+.table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.upload-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

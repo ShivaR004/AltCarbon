@@ -1,15 +1,23 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
-import "./FileUpload.css"; // Import CSS file
+import "./FileUpload.css";
 
 const FileUpload = () => {
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState("");
     const [preview, setPreview] = useState(null);
-    const fileInputRef = useRef(null); // Ref to reset the file input field
+    const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+        const selectedFile = event.target.files[0];
+        if (selectedFile && selectedFile.name.endsWith(".csv")) {
+            setFile(selectedFile);
+            setMessage("");
+        } else {
+            setFile(null);
+            setMessage("Only CSV files are allowed.");
+        }
     };
 
     const handleUpload = async () => {
@@ -18,6 +26,7 @@ const FileUpload = () => {
             return;
         }
 
+        setIsLoading(true);
         const formData = new FormData();
         formData.append("file", file);
 
@@ -25,20 +34,25 @@ const FileUpload = () => {
             const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-            setMessage("File uploaded successfully!"); // Success message
-            setPreview(response.data.preview);
 
-            // Reset all states and file input after 3 seconds
-            setTimeout(() => {
-                setFile(null);
-                setMessage("");
-                setPreview(null);
-                if (fileInputRef.current) {
-                    fileInputRef.current.value = ""; // Reset file input field
-                }
-            }, 300000);
+            setMessage("File uploaded successfully!");
+            setPreview(response.data.preview);
+            
         } catch (error) {
-            setMessage("File upload failed.");
+            console.error("File upload error:", error);
+            setMessage(error.response?.data?.message || "File upload failed.");
+            setPreview(null);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleReset = () => {
+        setFile(null);
+        setMessage("");
+        setPreview(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
         }
     };
 
@@ -51,16 +65,55 @@ const FileUpload = () => {
                     accept=".csv"
                     onChange={handleFileChange}
                     className="file-input"
-                    ref={fileInputRef} // Attach ref to the input field
+                    ref={fileInputRef}
+                    disabled={isLoading}
                 />
-                <button onClick={handleUpload} className="upload-btn">Upload</button>
+                <div className="button-group">
+                    <button 
+                        onClick={handleUpload} 
+                        className="upload-btn"
+                        disabled={!file || isLoading}
+                    >
+                        {isLoading ? "Uploading..." : "Upload"}
+                    </button>
+                    <button 
+                        onClick={handleReset} 
+                        className="reset-btn"
+                    >
+                        Reset
+                    </button>
+                </div>
             </div>
-            {message && <p className="message">{message}</p>}
 
-            {preview && (
+            {message && (
+                <p className={message.includes("successfully") ? "success-message" : "error-message"}>
+                    {message}
+                </p>
+            )}
+
+            {preview && preview.length > 0 && (
                 <div className="preview-container">
-                    <h3>CSV Preview:</h3>
-                    <pre className="preview-box">{JSON.stringify(preview, null, 2)}</pre>
+                    <h3>File Preview:</h3>
+                    <div className="table-wrapper">
+                        <table className="preview-table">
+                            <thead>
+                                <tr>
+                                    {Object.keys(preview[0]).map((key) => (
+                                        <th key={key}>{key}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {preview.map((row, index) => (
+                                    <tr key={index}>
+                                        {Object.values(row).map((value, i) => (
+                                            <td key={i}>{value}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>
