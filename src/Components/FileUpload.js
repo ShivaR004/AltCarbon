@@ -29,9 +29,11 @@ const FileUpload = () => {
         setIsLoading(true);
         const formData = new FormData();
         formData.append("file", file);
+        const apiUrl = "https://altcarbon-1.onrender.com";
+        const localUrl = "http://127.0.0.1:5000";
 
         try {
-            const response = await axios.post("http://127.0.0.1:5000/upload", formData, {
+            const response = await axios.post(`${apiUrl}/upload`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
