@@ -37,7 +37,7 @@ const FileUpload = () => {
     // API URL configuration
     const apiUrl = "https://altcarbon-1.onrender.com";
     const localUrl = "http://127.0.0.1:5000";
-    const baseUrl = localUrl; // Change to apiUrl for production
+    const baseUrl = apiUrl; // Change to apiUrl for production
 
     // Fetch element titles from the backend
     const fetchElementTitles = async () => {
