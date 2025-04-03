@@ -80,7 +80,7 @@ def get_graph_data():
     df_first_rows["Timestamp"] = pd.to_datetime(df_first_rows["Timestamp"])
     
     # Get element names (exclude "Run Number" and "Timestamp")
-    element_columns = [col for col in df_first_rows.columns if col not in ["Run Number", "Timestamp"]]
+    element_columns = [col for col in df_first_rows.columns if col not in ["Run Number", "Timestamp", "Rack:Tube", "Solution Label"]]
     
     # Prepare data for Chart.js
     chart_data = {}

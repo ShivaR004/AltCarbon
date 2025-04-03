@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import React, { useState, useRef } from "react";
-import axios from "axios";
-import "./FileUpload.css";
-
-=======
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Line } from 'react-chartjs-2';
@@ -30,15 +24,10 @@ ChartJS.register(
   Legend
 );
 
->>>>>>> 03294ce (graph after click)
 const FileUpload = () => {
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState("");
     const [preview, setPreview] = useState(null);
-<<<<<<< HEAD
-    const [isLoading, setIsLoading] = useState(false);
-    const fileInputRef = useRef(null);
-=======
     const [graphs, setGraphs] = useState(null);
     const [elementTitles, setElementTitles] = useState([]);
     const [selectedElement, setSelectedElement] = useState(null);
@@ -77,7 +66,6 @@ const FileUpload = () => {
     useEffect(() => {
         fetchElementTitles();
     }, []);
->>>>>>> 03294ce (graph after click)
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -99,24 +87,13 @@ const FileUpload = () => {
         setIsLoading(true);
         const formData = new FormData();
         formData.append("file", file);
-<<<<<<< HEAD
-        const apiUrl = "https://altcarbon-1.onrender.com";
-        const localUrl = "http://127.0.0.1:5000";
-
-        try {
-            const response = await axios.post(`${apiUrl}/upload`, formData, {
-=======
 
         try {
             const uploadResponse = await axios.post(`${baseUrl}/upload`, formData, {
->>>>>>> 03294ce (graph after click)
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
             setMessage("File uploaded successfully!");
-<<<<<<< HEAD
-            setPreview(response.data.preview);
-=======
             setPreview(uploadResponse.data.preview);
             
             // Fetch element titles and graph data
@@ -125,17 +102,13 @@ const FileUpload = () => {
             
             // Reset selected element
             setSelectedElement(null);
->>>>>>> 03294ce (graph after click)
             
         } catch (error) {
             console.error("File upload error:", error);
             setMessage(error.response?.data?.message || "File upload failed.");
             setPreview(null);
-<<<<<<< HEAD
-=======
             setGraphs(null);
             setElementTitles([]);
->>>>>>> 03294ce (graph after click)
         } finally {
             setIsLoading(false);
         }
@@ -145,18 +118,13 @@ const FileUpload = () => {
         setFile(null);
         setMessage("");
         setPreview(null);
-<<<<<<< HEAD
-=======
         setGraphs(null);
         setSelectedElement(null);
->>>>>>> 03294ce (graph after click)
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
     };
 
-<<<<<<< HEAD
-=======
     const handleElementClick = (element) => {
         // Toggle selected element
         setSelectedElement(selectedElement === element ? null : element);
@@ -183,7 +151,6 @@ const FileUpload = () => {
         }
     };
 
->>>>>>> 03294ce (graph after click)
     return (
         <div className="upload-container">
             <h2 className="title">Upload a CSV File</h2>
@@ -244,8 +211,6 @@ const FileUpload = () => {
                     </div>
                 </div>
             )}
-<<<<<<< HEAD
-=======
 
             {/* Element Titles Menu */}
             {elementTitles.length > 0 && graphs && (
@@ -296,13 +261,8 @@ const FileUpload = () => {
                     )}
                 </div>
             )}
->>>>>>> 03294ce (graph after click)
         </div>
     );
 };
 
-<<<<<<< HEAD
 export default FileUpload;
-=======
-export default FileUpload;
->>>>>>> 03294ce (graph after click)
