@@ -24,6 +24,84 @@ ChartJS.register(
   Legend
 );
 
+const Dashboard = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('dashboard');
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    setIsSidebarOpen(false);
+  };
+
+  return (
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header">
+        <div className="header-left">
+          <button className="hamburger-button" onClick={toggleSidebar}>
+            <span className="hamburger-icon"></span>
+          </button>
+          <h1 className="app-title">AltCarbon</h1>
+        </div>
+      </header>
+
+      {/* Sidebar */}
+      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <h2>Menu</h2>
+          <button className="close-sidebar" onClick={toggleSidebar}>×</button>
+        </div>
+        <nav className="sidebar-nav">
+          <ul>
+            <li>
+              <button 
+                className={`nav-item ${currentPage === 'dashboard' ? 'active' : ''}`}
+                onClick={() => navigateTo('dashboard')}
+              >
+                Dashboard
+              </button>
+            </li>
+            <li>
+              <button 
+                className={`nav-item ${currentPage === 'data-analysis' ? 'active' : ''}`}
+                onClick={() => navigateTo('data-analysis')}
+              >
+                Data Analysis
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      {/* Main Content */}
+      <main className="main-content">
+        {currentPage === 'dashboard' && <DashboardContent />}
+        {currentPage === 'data-analysis' && <FileUpload />}
+      </main>
+    </div>
+  );
+};
+
+const DashboardContent = () => {
+  return (
+    <div className="dashboard-container">
+      <h2>Welcome to AltCarbon Dashboard</h2>
+      <p>Select an option from the menu to get started.</p>
+      <div className="dashboard-cards">
+        {/* <div className="dashboard-card">
+          <h3>Data Analysis</h3>
+          <p>Upload CSV files and analyze the data with interactive charts.</p>
+        </div> */}
+        {/* Add more dashboard cards as needed */}
+      </div>
+    </div>
+  );
+};
+
 const FileUpload = () => {
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState("");
@@ -153,7 +231,7 @@ const FileUpload = () => {
 
     return (
         <div className="upload-container">
-            <h2 className="title">Upload a CSV File</h2>
+            <h2 className="section-title">Data Analysis</h2>
             <div className="upload-box">
                 <input
                     type="file"
@@ -265,4 +343,4 @@ const FileUpload = () => {
     );
 };
 
-export default FileUpload;
+export default Dashboard;
